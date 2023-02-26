@@ -14,7 +14,11 @@ app.get("/widgets", async(req,res)=>{
 app.post("/widgets", async(req,res)=>{
     const {fisrtColumnWidgets, secondColumnWidgets}= req.body;
     const newdata = await Widgets.findOneAndUpdate({firstcolumn: fisrtColumnWidgets, secondcolumn: secondColumnWidgets});
-  
+  if (!newdata){
+    const savedata = new Widgets({firstcolumn: fisrtColumnWidgets, secondcolumn: secondColumnWidgets});
+    await savedata.save();
+  }
+
     return res.json({success: true})
 })
 
